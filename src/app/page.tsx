@@ -64,7 +64,7 @@ export default async function Home() {
               href="/browse"
               className="rounded-lg border border-border bg-card px-6 py-3 font-bold transition hover:bg-black/[0.03]"
             >
-              Search Database
+              Browse Database
             </Link>
           </div>
 
