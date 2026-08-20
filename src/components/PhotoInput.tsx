@@ -15,6 +15,19 @@ export function PhotoInput({ name = "photos" }: { name?: string }) {
       <label className="block text-sm font-bold" htmlFor={name}>
         Photos
       </label>
+      <div className="mt-1 flex items-center gap-3 rounded-lg border border-dashed border-border bg-card px-4 py-6">
+        <label
+          htmlFor={name}
+          className="cursor-pointer rounded-lg border border-border bg-sidebar px-4 py-2 text-sm font-semibold text-foreground hover:bg-black/[0.04]"
+        >
+          Choose Files
+        </label>
+        <span className="text-sm text-muted">
+          {previews.length > 0
+            ? `${previews.length} file${previews.length === 1 ? "" : "s"}`
+            : "No files chosen"}
+        </span>
+      </div>
       <input
         id={name}
         name={name}
@@ -22,7 +35,7 @@ export function PhotoInput({ name = "photos" }: { name?: string }) {
         accept="image/*"
         multiple
         onChange={handleChange}
-        className="mt-1 block w-full rounded-lg border border-dashed border-border bg-card px-4 py-6 text-sm file:mr-4 file:rounded-lg file:border file:border-border file:bg-sidebar file:px-4 file:py-2 file:font-semibold file:text-foreground"
+        className="sr-only"
       />
       <p className="mt-1 text-xs text-muted">Up to 8 photos. JPG, PNG, WEBP, or GIF.</p>
 
