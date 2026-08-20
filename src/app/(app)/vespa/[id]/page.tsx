@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { DeleteVespaButton } from "@/components/DeleteVespaButton";
+import { VespaPhotoGallery } from "@/components/VespaPhotoGallery";
 
 // Ownership controls depend on the viewer's session — never statically
 // cache this.
@@ -29,7 +29,6 @@ export default async function VespaDetailPage({
 
   const isOwner = currentUser?.id === vespa.ownerId;
   const title = [vespa.year, vespa.model].filter(Boolean).join(" ") || vespa.model;
-  const [mainPhoto, ...restPhotos] = vespa.photos;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -44,35 +43,7 @@ export default async function VespaDetailPage({
         )}
       </div>
 
-      <div className="mb-6 overflow-hidden rounded-xl border border-border bg-mint">
-        {mainPhoto ? (
-          <div className="relative aspect-[16/10] w-full">
-            <Image
-              src={mainPhoto.url}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(min-width: 768px) 800px, 100vw"
-              priority
-            />
-          </div>
-        ) : (
-          <div className="flex aspect-[16/10] items-center justify-center text-6xl">🛵</div>
-        )}
-      </div>
-
-      {restPhotos.length > 0 && (
-        <div className="mb-8 grid grid-cols-4 gap-2 sm:grid-cols-6">
-          {restPhotos.map((photo) => (
-            <div
-              key={photo.id}
-              className="relative aspect-square overflow-hidden rounded-lg border border-border"
-            >
-              <Image src={photo.url} alt={title} fill className="object-cover" sizes="150px" />
-            </div>
-          ))}
-        </div>
-      )}
+      <VespaPhotoGallery photos={vespa.photos} title={title} />
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
