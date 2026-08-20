@@ -18,10 +18,7 @@ export default async function NewVespaPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-      <p className="mb-3 text-xs font-bold tracking-[0.2em] text-muted uppercase">
-        Add a Vespa
-      </p>
-      <h1 className="mb-8 text-3xl font-black tracking-tight sm:text-4xl">Park it in the registry.</h1>
+      <h1 className="mb-8 text-3xl font-black tracking-tight sm:text-4xl">Add your Vespa.</h1>
 
       {error && (
         <div className="mb-5 rounded-xl border border-error bg-error-soft p-3 text-sm font-semibold text-error-dark">
