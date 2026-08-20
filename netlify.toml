@@ -1,14 +1,15 @@
 [build]
   command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
 
-# Explicitly declare the Next.js runtime plugin. Without this, some site
-# configurations (e.g. a "Publish directory" left blank in the Netlify UI
-# during setup, which can resolve to the repo root instead of the
-# framework's build output) serve static files directly instead of routing
-# requests through Next.js's serverless functions — every page 404s because
-# there's no matching static file for it.
+# Explicitly declare the Next.js runtime plugin — without it, the site
+# serves static files directly instead of routing through Next.js's
+# serverless functions, and every page 404s. `publish` above is set
+# explicitly for the same reason: this site's UI settings had it resolving
+# to the repo root (same as the base directory), which the plugin refuses
+# to build against.
 [[plugins]]
   package = "@netlify/plugin-nextjs"
