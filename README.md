@@ -23,7 +23,7 @@ for `DATABASE_URL`.
 
 ```bash
 npm install
-cp .env.example .env   # fill in DATABASE_URL and SESSION_SECRET
+cp .env.example .env   # fill in DATABASE_URL, DIRECT_URL, and SESSION_SECRET
 npx prisma migrate deploy
 npm run dev
 ```
@@ -37,8 +37,11 @@ terminal and also shown on the "check your email" page for convenience in dev.
    declares the Next.js runtime plugin and publish directory — don't override the "Publish
    directory" field in the Netlify UI, leave it blank.
 2. **Set environment variables** under Site settings → Environment variables:
-   - `DATABASE_URL` — your Supabase project's Postgres connection string (Project settings →
-     Database → Connection string in the Supabase dashboard).
+   - `DATABASE_URL` — Supabase's **pooled** Postgres connection string (Connect button on the
+     project dashboard → ORM → Prisma shows both values). Supabase's direct connection is
+     IPv6-only and unreachable from Netlify's build servers, so this must be the pooled one.
+   - `DIRECT_URL` — Supabase's **session pooler** connection string (same Connect dialog) — used
+     only by database migrations, which need a non-pooled-transaction-mode connection.
    - `SESSION_SECRET` — any long random string (`openssl rand -hex 32`)
    - `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` — from Supabase's Project settings → API.
      Create a **public** Storage bucket named `photos` in the Supabase dashboard first.
