@@ -5,6 +5,8 @@ type ParsedVespa = {
     model: string;
     vin: string | null;
     color: string | null;
+    city: string | null;
+    state: string | null;
     story: string | null;
   };
 };
@@ -16,9 +18,19 @@ export function parseVespaForm(formData: FormData): ParsedVespa {
   const yearRaw = String(formData.get("year") ?? "").trim();
   const vin = String(formData.get("vin") ?? "").trim();
   const color = String(formData.get("color") ?? "").trim();
+  const city = String(formData.get("city") ?? "").trim();
+  const state = String(formData.get("state") ?? "").trim();
   const story = String(formData.get("story") ?? "").trim();
 
-  const empty = { year: null, model: "", vin: null, color: null, story: null };
+  const empty = {
+    year: null,
+    model: "",
+    vin: null,
+    color: null,
+    city: null,
+    state: null,
+    story: null,
+  };
 
   if (!model) {
     return { error: "Model is required.", data: empty };
@@ -39,6 +51,8 @@ export function parseVespaForm(formData: FormData): ParsedVespa {
       model,
       vin: vin || null,
       color: color || null,
+      city: city || null,
+      state: state || null,
       story: story || null,
     },
   };

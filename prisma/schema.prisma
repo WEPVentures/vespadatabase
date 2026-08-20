@@ -43,6 +43,8 @@ model Vespa {
   model     String
   vin       String?
   color     String?
+  city      String?
+  state     String?
   story     String?
   createdAt DateTime @default(now())
 

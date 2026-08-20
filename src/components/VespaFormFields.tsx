@@ -5,6 +5,8 @@ type Defaults = {
   model?: string;
   vin?: string | null;
   color?: string | null;
+  city?: string | null;
+  state?: string | null;
   story?: string | null;
 };
 
@@ -67,6 +69,34 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
             defaultValue={defaults?.vin ?? ""}
             placeholder="Optional, but encouraged"
             className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-accent/30"
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="block text-sm font-bold" htmlFor="city">
+            City
+          </label>
+          <input
+            id="city"
+            name="city"
+            defaultValue={defaults?.city ?? ""}
+            placeholder="Boston"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-bold" htmlFor="state">
+            State
+          </label>
+          <input
+            id="state"
+            name="state"
+            defaultValue={defaults?.state ?? ""}
+            placeholder="MA"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>
       </div>

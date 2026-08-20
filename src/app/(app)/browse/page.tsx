@@ -33,6 +33,8 @@ export default async function BrowsePage({
       { model: { contains: q } },
       { color: { contains: q } },
       { vin: { contains: q } },
+      { city: { contains: q } },
+      { state: { contains: q } },
       { owner: { username: { contains: q } } },
     ];
   }
@@ -76,7 +78,7 @@ export default async function BrowsePage({
             type="text"
             name="q"
             defaultValue={q ?? ""}
-            placeholder="Search by model, color, VIN, or owner…"
+            placeholder="Search by model, color, VIN, owner, or location…"
             className="w-full px-4 py-3 text-sm outline-none"
           />
           <button
@@ -175,6 +177,7 @@ export default async function BrowsePage({
               <tr className="border-b border-border bg-sidebar text-left text-[11px] font-bold tracking-wide text-muted uppercase">
                 <th className="px-4 py-2.5">Vespa</th>
                 <th className="px-4 py-2.5">Color</th>
+                <th className="px-4 py-2.5">Location</th>
                 <th className="px-4 py-2.5">VIN</th>
                 <th className="px-4 py-2.5">Photos</th>
                 <th className="px-4 py-2.5">Registered</th>
@@ -212,6 +215,9 @@ export default async function BrowsePage({
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-foreground/80">
                       {vespa.color ?? "—"}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-foreground/80">
+                      {[vespa.city, vespa.state].filter(Boolean).join(", ") || "—"}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {vespa.vin ? (

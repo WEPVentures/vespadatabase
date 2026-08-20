@@ -50,6 +50,8 @@ export default async function EditVespaPage({
             model: vespa.model,
             vin: vespa.vin,
             color: vespa.color,
+            city: vespa.city,
+            state: vespa.state,
             story: vespa.story,
           }}
         />

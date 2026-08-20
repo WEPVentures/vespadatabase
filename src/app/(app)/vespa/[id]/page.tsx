@@ -78,6 +78,11 @@ export default async function VespaDetailPage({
         <div>
           <h1 className="text-3xl font-black tracking-tight sm:text-4xl">{title}</h1>
           <p className="mt-1 text-lg text-foreground/60">{vespa.color ?? "Color unknown"}</p>
+          {(vespa.city || vespa.state) && (
+            <p className="mt-1 text-sm text-muted">
+              📍 {[vespa.city, vespa.state].filter(Boolean).join(", ")}
+            </p>
+          )}
         </div>
 
         {isOwner && (
