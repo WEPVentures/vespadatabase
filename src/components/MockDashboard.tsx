@@ -18,7 +18,7 @@ export function MockDashboard() {
           <div
             key={item.label}
             className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold whitespace-nowrap ${
-              item.active ? "bg-sidebar-active text-white" : "text-foreground/60"
+              item.active ? "bg-accent-soft text-accent-dark" : "text-foreground/60"
             }`}
           >
             <span>{item.emoji}</span>

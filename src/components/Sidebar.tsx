@@ -23,7 +23,7 @@ function NavLink({
       href={href}
       className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition ${
         active
-          ? "bg-sidebar-active text-white"
+          ? "bg-accent-soft text-accent-dark"
           : "text-foreground/70 hover:bg-black/[0.04] hover:text-foreground"
       }`}
     >
@@ -101,7 +101,7 @@ export function MobileTopBar({ user }: { user: SidebarUser }) {
         <Link
           href="/browse"
           className={`rounded-full px-2.5 py-1.5 text-lg ${
-            pathname === "/browse" ? "bg-sidebar-active" : ""
+            pathname === "/browse" ? "bg-accent-soft" : ""
           }`}
         >
           🧭
@@ -111,7 +111,7 @@ export function MobileTopBar({ user }: { user: SidebarUser }) {
             <Link
               href="/garage"
               className={`rounded-full px-2.5 py-1.5 text-lg ${
-                pathname === "/garage" ? "bg-sidebar-active" : ""
+                pathname === "/garage" ? "bg-accent-soft" : ""
               }`}
             >
               🏠
@@ -119,7 +119,7 @@ export function MobileTopBar({ user }: { user: SidebarUser }) {
             <Link
               href={user.username ? `/garage/${user.username}` : "/onboarding"}
               className={`rounded-full px-2.5 py-1.5 text-lg ${
-                pathname === `/garage/${user.username}` ? "bg-sidebar-active" : ""
+                pathname === `/garage/${user.username}` ? "bg-accent-soft" : ""
               }`}
             >
               👤
