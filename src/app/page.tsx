@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { countAllVespas } from "@/lib/data/vespas";
+import { countUsersWithUsername } from "@/lib/data/users";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { Footer } from "@/components/Footer";
 import { BrowserChrome } from "@/components/BrowserChrome";
@@ -30,8 +31,8 @@ const FEATURES = [
 
 export default async function Home() {
   const [vespaCount, ownerCount] = await Promise.all([
-    prisma.vespa.count(),
-    prisma.user.count({ where: { username: { not: null } } }),
+    countAllVespas(),
+    countUsersWithUsername(),
   ]);
 
   return (

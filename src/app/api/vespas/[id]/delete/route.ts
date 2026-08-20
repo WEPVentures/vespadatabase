@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { deleteVespa, getVespaById } from "@/lib/data/vespas";
 import { getSessionUserId } from "@/lib/session";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -9,9 +9,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.redirect(new URL("/login", req.url), 303);
   }
 
-  const existing = await prisma.vespa.findUnique({ where: { id } });
+  const existing = await getVespaById(id);
   if (existing && existing.ownerId === userId) {
-    await prisma.vespa.delete({ where: { id } });
+    await deleteVespa(id);
   }
 
   return NextResponse.redirect(new URL("/garage", req.url), 303);

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/db";
+import { getVespaById } from "@/lib/data/vespas";
+import { getUserById } from "@/lib/data/users";
 import { getCurrentUser } from "@/lib/auth";
 import { DeleteVespaButton } from "@/components/DeleteVespaButton";
 
@@ -13,16 +14,10 @@ export default async function VespaDetailPage({
   const { id } = await params;
   const currentUser = await getCurrentUser();
 
-  const vespa = await prisma.vespa.findUnique({
-    where: { id },
-    include: {
-      owner: { select: { username: true } },
-      photos: { orderBy: { createdAt: "asc" } },
-    },
-  });
-
+  const vespa = await getVespaById(id);
   if (!vespa) notFound();
 
+  const owner = await getUserById(vespa.ownerId);
   const isOwner = currentUser?.id === vespa.ownerId;
   const title = [vespa.year, vespa.model].filter(Boolean).join(" ") || vespa.model;
   const [mainPhoto, ...restPhotos] = vespa.photos;
@@ -30,12 +25,12 @@ export default async function VespaDetailPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <div className="mb-6">
-        {vespa.owner.username && (
+        {owner?.username && (
           <Link
-            href={`/garage/${vespa.owner.username}`}
+            href={`/garage/${owner.username}`}
             className="text-sm font-semibold text-muted hover:text-accent"
           >
-            ← @{vespa.owner.username}&apos;s garage
+            ← @{owner.username}&apos;s garage
           </Link>
         )}
       </div>
@@ -116,7 +111,7 @@ export default async function VespaDetailPage({
       )}
 
       <p className="mt-6 text-xs text-muted">
-        Registered {vespa.createdAt.toLocaleDateString()}
+        Registered {new Date(vespa.createdAt).toLocaleDateString()}
       </p>
     </div>
   );

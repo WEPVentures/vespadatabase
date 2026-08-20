@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
+import { getVespaById } from "@/lib/data/vespas";
 import { getCurrentUser } from "@/lib/auth";
 import { VespaFormFields } from "@/components/VespaFormFields";
 
@@ -15,7 +15,7 @@ export default async function EditVespaPage({
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const vespa = await prisma.vespa.findUnique({ where: { id } });
+  const vespa = await getVespaById(id);
   if (!vespa) notFound();
   if (vespa.ownerId !== user.id) redirect(`/vespa/${id}`);
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { listVespasByOwner } from "@/lib/data/vespas";
 import { VespaCard } from "@/components/VespaCard";
 
 export default async function GaragePage() {
@@ -9,11 +9,7 @@ export default async function GaragePage() {
   if (!user) redirect("/login");
   if (!user.username) redirect("/onboarding");
 
-  const vespas = await prisma.vespa.findMany({
-    where: { ownerId: user.id },
-    orderBy: { createdAt: "desc" },
-    include: { photos: { orderBy: { createdAt: "asc" }, take: 1 } },
-  });
+  const vespas = await listVespasByOwner(user.id);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
