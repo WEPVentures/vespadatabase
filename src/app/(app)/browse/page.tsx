@@ -40,7 +40,7 @@ export default async function BrowsePage({
     ];
   }
 
-  const [vespas, modelRows, yearRows, totalCount] = await Promise.all([
+  const [vespas, modelRows, yearRows, totalCount, ownerCount] = await Promise.all([
     prisma.vespa.findMany({
       where,
       orderBy: SORT_OPTIONS[sortKey].orderBy,
@@ -62,6 +62,7 @@ export default async function BrowsePage({
       orderBy: { year: "desc" },
     }),
     prisma.vespa.count(),
+    prisma.user.count({ where: { username: { not: null } } }),
   ]);
 
   const hasFilters = Boolean(model || year || q);
@@ -70,7 +71,7 @@ export default async function BrowsePage({
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="mb-2 text-3xl font-black tracking-tight sm:text-4xl">
-        Directory
+        Database
       </h1>
 
       <form method="GET" className="mt-6">
@@ -162,6 +163,13 @@ export default async function BrowsePage({
             >
               Clear
             </Link>
+          )}
+
+          {totalCount > 0 && (
+            <p className="ml-auto text-sm font-semibold text-mint-dark">
+              🛵 {totalCount} Vespa{totalCount === 1 ? "" : "s"} registered by {ownerCount}{" "}
+              owner{ownerCount === 1 ? "" : "s"} so far.
+            </p>
           )}
         </div>
       </form>

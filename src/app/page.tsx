@@ -1,13 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { prisma } from "@/lib/db";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { Footer } from "@/components/Footer";
 import { BrowserChrome } from "@/components/BrowserChrome";
 import { MockDashboard } from "@/components/MockDashboard";
 
-// Shows live counts that change as people register — never statically
-// cache this.
+// The header shows session-dependent nav (Sign In vs My Garage) — never
+// statically cache this.
 export const dynamic = "force-dynamic";
 
 const FEATURES = [
@@ -34,11 +33,6 @@ const FEATURES = [
 ];
 
 export default async function Home() {
-  const [vespaCount, ownerCount] = await Promise.all([
-    prisma.vespa.count(),
-    prisma.user.count({ where: { username: { not: null } } }),
-  ]);
-
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <MarketingHeader />
@@ -71,13 +65,6 @@ export default async function Home() {
                   Browse Database
                 </Link>
               </div>
-
-              {vespaCount > 0 && (
-                <p className="mt-4 text-sm font-semibold text-mint-dark">
-                  🛵 {vespaCount} Vespa{vespaCount === 1 ? "" : "s"} registered by {ownerCount}{" "}
-                  owner{ownerCount === 1 ? "" : "s"} so far.
-                </p>
-              )}
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border lg:aspect-[5/4]">
