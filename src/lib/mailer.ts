@@ -11,21 +11,21 @@ export async function sendMagicLinkEmail(email: string, link: string) {
   }
 
   const resend = new Resend(apiKey);
-  const from = process.env.EMAIL_FROM || "VespaDatabase <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM || "Vespa Database <onboarding@resend.dev>";
 
   const { error } = await resend.emails.send({
     from,
     to: email,
-    subject: "Your VespaDatabase login link",
+    subject: "Your Vespa Database login link",
     text: `Click to sign in: ${link}\n\nThis link expires in 15 minutes.`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <h2>🛵 VespaDatabase</h2>
+        <h2>🛵 Vespa Database</h2>
         <p>Click the button below to sign in. This link expires in 15 minutes.</p>
         <p>
           <a href="${link}" style="display:inline-block;background:#4b7a72;color:#fff;
             padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
-            Sign in to VespaDatabase
+            Sign in to Vespa Database
           </a>
         </p>
         <p style="color:#888;font-size:12px;">Or paste this link in your browser: ${link}</p>
