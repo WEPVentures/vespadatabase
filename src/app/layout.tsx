@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VespaDatabase — A Registry for Vespa Owners",
+  title: "Vespa Database",
   description:
     "Catalog your Vespa and help build a living history of every scooter out there. A crowdsourced registry for Vespa owners.",
 };

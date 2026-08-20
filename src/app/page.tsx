@@ -44,15 +44,13 @@ export default async function Home() {
 
       <main className="flex-1">
         <section className="mx-auto max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20">
-          <p className="mb-4 text-xs font-bold tracking-[0.2em] text-muted uppercase">
-            A registry for Vespa owners
-          </p>
           <h1 className="max-w-3xl text-5xl font-black tracking-tight sm:text-6xl md:text-7xl">
-            Every Vespa has a story.
+            Ciao bella!
           </h1>
           <p className="mt-6 max-w-xl text-lg text-foreground/70 sm:text-xl">
-            Vespa is an 80-year-old company — where are they all? Catalog yours, and help build
-            a living history of every scooter out there.
+            Since 1946, Vespa has made the world&apos;s most iconic scooter. More than 20 million
+            have been produced. Vespa Database is a crowdsourced catalog built to connect owners
+            around the world and document the life of every Vespa added to the database.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">

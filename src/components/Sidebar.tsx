@@ -40,7 +40,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar px-4 py-5 md:flex">
       <Link href="/" className="mb-6 flex items-center gap-2 px-2 text-base font-black tracking-tight">
         <span>🛵</span>
-        <span>VespaDatabase</span>
+        <span>Vespa Database</span>
       </Link>
 
       <nav className="flex flex-col gap-1">
@@ -94,7 +94,7 @@ export function MobileTopBar({ user }: { user: SidebarUser }) {
     <header className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-3 md:hidden">
       <Link href="/" className="flex items-center gap-1.5 text-sm font-black tracking-tight">
         <span>🛵</span>
-        <span>VespaDatabase</span>
+        <span>Vespa Database</span>
       </Link>
 
       <nav className="flex items-center gap-1">
