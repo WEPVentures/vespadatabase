@@ -1,11 +1,12 @@
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { nanoid } from "nanoid";
-import { getStore } from "@netlify/blobs";
+import { createClient } from "@supabase/supabase-js";
 
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 const MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8MB
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+const SUPABASE_BUCKET = "photos";
 
 function extensionFor(type: string) {
   switch (type) {
@@ -20,21 +21,31 @@ function extensionFor(type: string) {
   }
 }
 
-// Netlify Functions have an ephemeral filesystem, so plain disk writes
-// don't survive between invocations there. Use Netlify Blobs when running
-// on Netlify (detected via its own NETLIFY env var), and fall back to
-// local disk for local development, where there's no blob store to talk to.
-function isNetlify() {
-  return Boolean(process.env.NETLIFY);
+function getSupabaseCredentials() {
+  const url = process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return url && serviceRoleKey ? { url, serviceRoleKey } : null;
 }
 
-async function savePhotoToBlobs(file: File): Promise<string> {
-  const store = getStore("photos");
+// Use Supabase Storage when it's configured; otherwise fall back to local
+// disk for local development, where there's no Supabase project to talk to.
+async function savePhotoToSupabase(
+  file: File,
+  credentials: { url: string; serviceRoleKey: string }
+): Promise<string> {
+  const supabase = createClient(credentials.url, credentials.serviceRoleKey);
   const key = `${nanoid(16)}.${extensionFor(file.type)}`;
-  await store.set(key, await file.arrayBuffer(), {
-    metadata: { contentType: file.type },
-  });
-  return `/api/photos/${key}`;
+
+  const { error } = await supabase.storage
+    .from(SUPABASE_BUCKET)
+    .upload(key, await file.arrayBuffer(), { contentType: file.type });
+
+  if (error) {
+    throw new Error(`Supabase Storage upload failed: ${error.message}`);
+  }
+
+  const { data } = supabase.storage.from(SUPABASE_BUCKET).getPublicUrl(key);
+  return data.publicUrl;
 }
 
 async function savePhotoToDisk(file: File): Promise<string> {
@@ -52,7 +63,8 @@ export async function savePhoto(file: File): Promise<string | null> {
   if (!ALLOWED_TYPES.has(file.type)) return null;
   if (file.size > MAX_SIZE_BYTES) return null;
 
-  return isNetlify() ? savePhotoToBlobs(file) : savePhotoToDisk(file);
+  const credentials = getSupabaseCredentials();
+  return credentials ? savePhotoToSupabase(file, credentials) : savePhotoToDisk(file);
 }
 
 export async function savePhotos(files: File[]): Promise<string[]> {

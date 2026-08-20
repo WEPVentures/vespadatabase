@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { listVespasByOwner } from "@/lib/data/vespas";
+import { prisma } from "@/lib/db";
 import { VespaCard } from "@/components/VespaCard";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// This shows the current user's own data — never statically cache it.
 export const dynamic = "force-dynamic";
 
 export default async function GaragePage() {
@@ -14,7 +12,11 @@ export default async function GaragePage() {
   if (!user) redirect("/login");
   if (!user.username) redirect("/onboarding");
 
-  const vespas = await listVespasByOwner(user.id);
+  const vespas = await prisma.vespa.findMany({
+    where: { ownerId: user.id },
+    orderBy: { createdAt: "desc" },
+    include: { photos: { orderBy: { createdAt: "asc" }, take: 1 } },
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">

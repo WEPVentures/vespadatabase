@@ -1,11 +1,10 @@
 import { notFound, redirect } from "next/navigation";
-import { getVespaById } from "@/lib/data/vespas";
+import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { VespaFormFields } from "@/components/VespaFormFields";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// Ownership check depends on the viewer's session — never statically
+// cache this.
 export const dynamic = "force-dynamic";
 
 export default async function EditVespaPage({
@@ -20,7 +19,7 @@ export default async function EditVespaPage({
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const vespa = await getVespaById(id);
+  const vespa = await prisma.vespa.findUnique({ where: { id } });
   if (!vespa) notFound();
   if (vespa.ownerId !== user.id) redirect(`/vespa/${id}`);
 

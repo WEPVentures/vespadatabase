@@ -1,24 +1,20 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 export async function sendMagicLinkEmail(email: string, link: string) {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
+  const apiKey = process.env.RESEND_API_KEY;
 
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    // Dev fallback: no SMTP configured, just log it. The link is also
-    // returned to the client so it can be shown on screen.
+  if (!apiKey) {
+    // Dev fallback: no Resend key configured, just log it. The link is
+    // also returned to the client so it can be shown on screen.
     console.log(`\n🛵  Magic link for ${email}:\n${link}\n`);
     return;
   }
 
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT) || 587,
-    secure: Number(SMTP_PORT) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-  });
+  const resend = new Resend(apiKey);
+  const from = process.env.EMAIL_FROM || "VespaDatabase <onboarding@resend.dev>";
 
-  await transporter.sendMail({
-    from: SMTP_FROM || `VespaDatabase <${SMTP_USER}>`,
+  const { error } = await resend.emails.send({
+    from,
     to: email,
     subject: "Your VespaDatabase login link",
     text: `Click to sign in: ${link}\n\nThis link expires in 15 minutes.`,
@@ -36,4 +32,8 @@ export async function sendMagicLinkEmail(email: string, link: string) {
       </div>
     `,
   });
+
+  if (error) {
+    throw new Error(`Resend failed to send magic link: ${error.message}`);
+  }
 }

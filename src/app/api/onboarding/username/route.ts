@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isUsernameTaken, setUsername } from "@/lib/data/users";
+import { prisma } from "@/lib/db";
 import { getSessionUserId } from "@/lib/session";
 import { isValidUsername, normalizeUsername } from "@/lib/validation";
 
@@ -20,11 +20,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (await isUsernameTaken(username, userId)) {
+  const existing = await prisma.user.findUnique({ where: { username } });
+  if (existing && existing.id !== userId) {
     return NextResponse.json({ error: "That username is taken." }, { status: 409 });
   }
 
-  await setUsername(userId, username);
+  await prisma.user.update({ where: { id: userId }, data: { username } });
 
   return NextResponse.json({ ok: true, username });
 }

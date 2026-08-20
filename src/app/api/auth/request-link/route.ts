@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findOrCreateUserByEmail } from "@/lib/data/users";
-import { createLoginToken } from "@/lib/data/tokens";
+import { nanoid } from "nanoid";
+import { prisma } from "@/lib/db";
 import { sendMagicLinkEmail } from "@/lib/mailer";
 import { isValidEmail, normalizeEmail } from "@/lib/validation";
 
@@ -15,20 +15,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
-  const user = await findOrCreateUserByEmail(email);
-  const token = await createLoginToken(email, user.id, TOKEN_TTL_MINUTES);
+  const user = await prisma.user.upsert({
+    where: { email },
+    update: {},
+    create: { email },
+  });
+
+  const token = nanoid(32);
+  const expiresAt = new Date(Date.now() + TOKEN_TTL_MINUTES * 60 * 1000);
+
+  await prisma.loginToken.create({
+    data: { token, email, expiresAt, userId: user.id },
+  });
 
   const appUrl = process.env.APP_URL || req.nextUrl.origin;
   const link = `${appUrl}/api/auth/verify?token=${token}`;
 
-  await sendMagicLinkEmail(email, link);
+  try {
+    await sendMagicLinkEmail(email, link);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Couldn't send the sign-in email. Try again in a moment." },
+      { status: 500 }
+    );
+  }
 
-  const smtpConfigured = Boolean(
-    process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS
-  );
+  const resendConfigured = Boolean(process.env.RESEND_API_KEY);
 
   return NextResponse.json({
     ok: true,
-    devLink: smtpConfigured ? undefined : link,
+    devLink: resendConfigured ? undefined : link,
   });
 }

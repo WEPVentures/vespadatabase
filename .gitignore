@@ -41,9 +41,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local dev data store (local dev fallback only; production uses Netlify Blobs)
-/.data
+/src/generated/prisma
 
-# uploaded photos (local dev fallback only; production uses Netlify Blobs)
+# uploaded photos (local dev fallback only; production uses Supabase Storage)
 /public/uploads/*
 !/public/uploads/.gitkeep

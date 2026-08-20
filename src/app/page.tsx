@@ -1,14 +1,12 @@
 import Link from "next/link";
-import { countAllVespas } from "@/lib/data/vespas";
-import { countUsersWithUsername } from "@/lib/data/users";
+import { prisma } from "@/lib/db";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { Footer } from "@/components/Footer";
 import { BrowserChrome } from "@/components/BrowserChrome";
 import { MockDashboard } from "@/components/MockDashboard";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// Shows live counts that change as people register — never statically
+// cache this.
 export const dynamic = "force-dynamic";
 
 const FEATURES = [
@@ -36,8 +34,8 @@ const FEATURES = [
 
 export default async function Home() {
   const [vespaCount, ownerCount] = await Promise.all([
-    countAllVespas(),
-    countUsersWithUsername(),
+    prisma.vespa.count(),
+    prisma.user.count({ where: { username: { not: null } } }),
   ]);
 
   return (

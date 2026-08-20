@@ -1,26 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  filterAndSortVespas,
-  getDistinctModels,
-  getDistinctYears,
-  listAllVespas,
-  BrowseSortKey,
-} from "@/lib/data/vespas";
-import { getUsersByIds } from "@/lib/data/users";
+import { prisma } from "@/lib/db";
+import { Prisma } from "@/generated/prisma/client";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// This is a live directory that changes as people register Vespas — never
+// statically cache it.
 export const dynamic = "force-dynamic";
 
-const SORT_OPTIONS: Record<BrowseSortKey, { label: string }> = {
-  newest: { label: "Newest first" },
-  oldest: { label: "Oldest first" },
-  year_desc: { label: "Year, newest" },
-  year_asc: { label: "Year, oldest" },
-  model: { label: "Model, A–Z" },
+const SORT_OPTIONS = {
+  newest: { label: "Newest first", orderBy: { createdAt: "desc" } as const },
+  oldest: { label: "Oldest first", orderBy: { createdAt: "asc" } as const },
+  year_desc: { label: "Year, newest", orderBy: { year: "desc" } as const },
+  year_asc: { label: "Year, oldest", orderBy: { year: "asc" } as const },
+  model: { label: "Model, A–Z", orderBy: { model: "asc" } as const },
 };
+
+type SortKey = keyof typeof SORT_OPTIONS;
 
 export default async function BrowsePage({
   searchParams,
@@ -28,26 +23,43 @@ export default async function BrowsePage({
   searchParams: Promise<{ model?: string; year?: string; q?: string; sort?: string }>;
 }) {
   const { model, year, q, sort } = await searchParams;
-  const sortKey: BrowseSortKey = sort && sort in SORT_OPTIONS ? (sort as BrowseSortKey) : "newest";
-  const yearNum = year ? Number(year) : undefined;
+  const sortKey: SortKey = sort && sort in SORT_OPTIONS ? (sort as SortKey) : "newest";
 
-  const [allVespas, modelRows, yearRows] = await Promise.all([
-    listAllVespas(),
-    getDistinctModels(),
-    getDistinctYears(),
+  const where: Prisma.VespaWhereInput = {};
+  if (model) where.model = model;
+  if (year) where.year = Number(year);
+  if (q) {
+    where.OR = [
+      { model: { contains: q } },
+      { color: { contains: q } },
+      { vin: { contains: q } },
+      { owner: { username: { contains: q } } },
+    ];
+  }
+
+  const [vespas, modelRows, yearRows, totalCount] = await Promise.all([
+    prisma.vespa.findMany({
+      where,
+      orderBy: SORT_OPTIONS[sortKey].orderBy,
+      include: {
+        owner: { select: { username: true } },
+        photos: { orderBy: { createdAt: "asc" }, take: 1 },
+        _count: { select: { photos: true } },
+      },
+    }),
+    prisma.vespa.findMany({
+      distinct: ["model"],
+      select: { model: true },
+      orderBy: { model: "asc" },
+    }),
+    prisma.vespa.findMany({
+      where: { year: { not: null } },
+      distinct: ["year"],
+      select: { year: true },
+      orderBy: { year: "desc" },
+    }),
+    prisma.vespa.count(),
   ]);
-  const totalCount = allVespas.length;
-
-  const owners = await getUsersByIds(allVespas.map((v) => v.ownerId));
-  const usernameOf = (ownerId: string) => owners.get(ownerId)?.username ?? null;
-
-  const vespas = filterAndSortVespas(allVespas, {
-    model,
-    year: yearNum,
-    q,
-    sort: sortKey,
-    ownerUsernameOf: usernameOf,
-  });
 
   const hasFilters = Boolean(model || year || q);
   const popularModels = modelRows.slice(0, 5);
@@ -83,11 +95,11 @@ export default async function BrowsePage({
             <span className="font-semibold text-muted">Try:</span>
             {popularModels.map((m) => (
               <Link
-                key={m}
-                href={`/browse?model=${encodeURIComponent(m)}`}
+                key={m.model}
+                href={`/browse?model=${encodeURIComponent(m.model)}`}
                 className="rounded-full border border-border bg-sidebar px-3 py-1 font-semibold text-foreground/70 hover:bg-black/[0.04]"
               >
-                {m}
+                {m.model}
               </Link>
             ))}
           </div>
@@ -117,8 +129,8 @@ export default async function BrowsePage({
           >
             <option value="">All models</option>
             {modelRows.map((m) => (
-              <option key={m} value={m}>
-                {m}
+              <option key={m.model} value={m.model}>
+                {m.model}
               </option>
             ))}
           </select>
@@ -130,8 +142,8 @@ export default async function BrowsePage({
           >
             <option value="">All years</option>
             {yearRows.map((y) => (
-              <option key={y} value={y}>
-                {y}
+              <option key={y.year} value={y.year ?? ""}>
+                {y.year}
               </option>
             ))}
           </select>
@@ -175,7 +187,6 @@ export default async function BrowsePage({
               {vespas.map((vespa) => {
                 const title = [vespa.year, vespa.model].filter(Boolean).join(" ") || vespa.model;
                 const photo = vespa.photos[0];
-                const username = usernameOf(vespa.ownerId);
                 return (
                   <tr
                     key={vespa.id}
@@ -194,9 +205,9 @@ export default async function BrowsePage({
                           <span className="block truncate font-bold text-foreground hover:text-accent">
                             {title}
                           </span>
-                          {username && (
+                          {vespa.owner.username && (
                             <span className="block truncate text-xs text-muted">
-                              @{username}
+                              @{vespa.owner.username}
                             </span>
                           )}
                         </span>
@@ -215,10 +226,10 @@ export default async function BrowsePage({
                       )}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-foreground/80">
-                      {vespa.photos.length}
+                      {vespa._count.photos}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-muted">
-                      {new Date(vespa.createdAt).toLocaleDateString()}
+                      {vespa.createdAt.toLocaleDateString()}
                     </td>
                   </tr>
                 );

@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
-import { getUserByUsername } from "@/lib/data/users";
-import { listVespasByOwner } from "@/lib/data/vespas";
+import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { VespaCard } from "@/components/VespaCard";
 import Link from "next/link";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// Every visit can be a different owner's page with fresh data — never
+// statically cache it.
 export const dynamic = "force-dynamic";
 
 export default async function PublicGaragePage({
@@ -18,10 +16,18 @@ export default async function PublicGaragePage({
   const { username } = await params;
   const currentUser = await getCurrentUser();
 
-  const owner = await getUserByUsername(username.toLowerCase());
+  const owner = await prisma.user.findUnique({
+    where: { username: username.toLowerCase() },
+    include: {
+      vespas: {
+        orderBy: { createdAt: "desc" },
+        include: { photos: { orderBy: { createdAt: "asc" }, take: 1 } },
+      },
+    },
+  });
+
   if (!owner) notFound();
 
-  const vespas = await listVespasByOwner(owner.id);
   const isOwnGarage = currentUser?.id === owner.id;
 
   return (
@@ -33,8 +39,8 @@ export default async function PublicGaragePage({
           </p>
           <h1 className="text-3xl font-black tracking-tight sm:text-4xl">@{owner.username}</h1>
           <p className="mt-2 text-foreground/70">
-            {vespas.length} Vespa{vespas.length === 1 ? "" : "s"} registered · member
-            since {new Date(owner.createdAt).getFullYear()}
+            {owner.vespas.length} Vespa{owner.vespas.length === 1 ? "" : "s"} registered · member
+            since {owner.createdAt.getFullYear()}
           </p>
         </div>
 
@@ -48,14 +54,14 @@ export default async function PublicGaragePage({
         )}
       </div>
 
-      {vespas.length === 0 ? (
+      {owner.vespas.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-card p-12 text-center">
           <p className="text-4xl">🛵</p>
           <p className="mt-3 font-bold">Nothing here yet.</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {vespas.map((vespa) => (
+          {owner.vespas.map((vespa) => (
             <VespaCard key={vespa.id} vespa={vespa} />
           ))}
         </div>

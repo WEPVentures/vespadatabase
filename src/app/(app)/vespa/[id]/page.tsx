@@ -1,14 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getVespaById } from "@/lib/data/vespas";
-import { getUserById } from "@/lib/data/users";
+import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { DeleteVespaButton } from "@/components/DeleteVespaButton";
 
-// Every page here reads live data (Netlify Blobs / session), and
-// Blobs credentials only exist at request time, not during the build's
-// static prerendering step — never statically optimize these.
+// Ownership controls depend on the viewer's session — never statically
+// cache this.
 export const dynamic = "force-dynamic";
 
 export default async function VespaDetailPage({
@@ -19,10 +17,16 @@ export default async function VespaDetailPage({
   const { id } = await params;
   const currentUser = await getCurrentUser();
 
-  const vespa = await getVespaById(id);
+  const vespa = await prisma.vespa.findUnique({
+    where: { id },
+    include: {
+      owner: { select: { username: true } },
+      photos: { orderBy: { createdAt: "asc" } },
+    },
+  });
+
   if (!vespa) notFound();
 
-  const owner = await getUserById(vespa.ownerId);
   const isOwner = currentUser?.id === vespa.ownerId;
   const title = [vespa.year, vespa.model].filter(Boolean).join(" ") || vespa.model;
   const [mainPhoto, ...restPhotos] = vespa.photos;
@@ -30,12 +34,12 @@ export default async function VespaDetailPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <div className="mb-6">
-        {owner?.username && (
+        {vespa.owner.username && (
           <Link
-            href={`/garage/${owner.username}`}
+            href={`/garage/${vespa.owner.username}`}
             className="text-sm font-semibold text-muted hover:text-accent"
           >
-            ← @{owner.username}&apos;s garage
+            ← @{vespa.owner.username}&apos;s garage
           </Link>
         )}
       </div>
@@ -116,7 +120,7 @@ export default async function VespaDetailPage({
       )}
 
       <p className="mt-6 text-xs text-muted">
-        Registered {new Date(vespa.createdAt).toLocaleDateString()}
+        Registered {vespa.createdAt.toLocaleDateString()}
       </p>
     </div>
   );
