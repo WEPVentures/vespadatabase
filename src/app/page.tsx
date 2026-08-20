@@ -85,7 +85,7 @@ export default async function Home() {
             <MockDashboard />
           </BrowserChrome>
           <p className="mt-3 text-center text-xs text-muted">
-            A sample of the directory — every registered Vespa, searchable and filterable.
+            Database illustration
           </p>
         </section>
 
