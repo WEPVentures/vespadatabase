@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/db";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { Footer } from "@/components/Footer";
@@ -44,36 +45,52 @@ export default async function Home() {
 
       <main className="flex-1">
         <section className="mx-auto max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20">
-          <h1 className="max-w-3xl text-5xl font-black tracking-tight sm:text-6xl md:text-7xl">
-            Ciao bella!
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-foreground/70 sm:text-xl">
-            Since 1946, Vespa has made the world&apos;s most iconic scooter. More than 20 million
-            have been produced. Vespa Database is a crowdsourced catalog built to connect owners
-            around the world and document the life of every Vespa added to the database.
-          </p>
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <h1 className="text-5xl font-black tracking-tight sm:text-6xl md:text-7xl">
+                Ciao bella!
+              </h1>
+              <p className="mt-6 text-lg text-foreground/70 sm:text-xl">
+                Since 1946, Vespa has made the world&apos;s most iconic scooter. More than 20
+                million have been produced. Vespa Database is a crowdsourced catalog built to
+                connect owners around the world and document the life of every Vespa added to the
+                database.
+              </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/login"
-              className="rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark"
-            >
-              Sign Up
-            </Link>
-            <Link
-              href="/browse"
-              className="rounded-lg border border-border bg-card px-6 py-3 font-bold transition hover:bg-black/[0.03]"
-            >
-              Browse Database
-            </Link>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/login"
+                  className="rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/browse"
+                  className="rounded-lg border border-border bg-card px-6 py-3 font-bold transition hover:bg-black/[0.03]"
+                >
+                  Browse Database
+                </Link>
+              </div>
+
+              {vespaCount > 0 && (
+                <p className="mt-4 text-sm font-semibold text-mint-dark">
+                  🛵 {vespaCount} Vespa{vespaCount === 1 ? "" : "s"} registered by {ownerCount}{" "}
+                  owner{ownerCount === 1 ? "" : "s"} so far.
+                </p>
+              )}
+            </div>
+
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border lg:aspect-[5/4]">
+              <Image
+                src="/uploads/hero-tokyo-vespa.jpeg"
+                alt="A cream-colored Vespa parked on a street corner in Tokyo"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 520px, 100vw"
+                priority
+              />
+            </div>
           </div>
-
-          {vespaCount > 0 && (
-            <p className="mt-4 text-sm font-semibold text-mint-dark">
-              🛵 {vespaCount} Vespa{vespaCount === 1 ? "" : "s"} registered by {ownerCount}{" "}
-              owner{ownerCount === 1 ? "" : "s"} so far.
-            </p>
-          )}
         </section>
 
         <section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6">
