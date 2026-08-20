@@ -4,6 +4,12 @@
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
+  # Next.js's Turbopack build cache writes incremental artifacts that can
+  # contain literal env var values (e.g. RESEND_API_KEY) as part of cached
+  # module output. That cache is never served to visitors, but Netlify's
+  # secrets scanner still flags it as a false positive — tell it to skip
+  # the cache directory instead of scanning it.
+  SECRETS_SCAN_OMIT_PATHS = "**/.next/cache/**"
 
 # Explicitly declare the Next.js runtime plugin — without it, the site
 # serves static files directly instead of routing through Next.js's
