@@ -33,7 +33,7 @@ export default async function EditVespaPage({
       </h1>
 
       {error && (
-        <div className="mb-5 rounded-xl border border-accent bg-accent-soft p-3 text-sm font-semibold text-accent-dark">
+        <div className="mb-5 rounded-xl border border-error bg-error-soft p-3 text-sm font-semibold text-error-dark">
           {error}
         </div>
       )}

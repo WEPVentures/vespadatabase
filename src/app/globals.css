@@ -4,9 +4,12 @@
   --background: #ffffff;
   --foreground: #131316;
   --muted: #6b6b74;
-  --accent: #b3341f;
-  --accent-dark: #8c2818;
-  --accent-soft: #fbeae7;
+  --accent: #4b7a72;
+  --accent-dark: #3a5f58;
+  --accent-soft: #e8f0ee;
+  --error: #b3341f;
+  --error-dark: #8c2818;
+  --error-soft: #fbeae7;
   --mint: #e6f4ea;
   --mint-dark: #1f7a43;
   --card: #ffffff;
@@ -22,6 +25,9 @@
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
   --color-accent-soft: var(--accent-soft);
+  --color-error: var(--error);
+  --color-error-dark: var(--error-dark);
+  --color-error-soft: var(--error-soft);
   --color-mint: var(--mint);
   --color-mint-dark: var(--mint-dark);
   --color-card: var(--card);

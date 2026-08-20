@@ -23,7 +23,7 @@ export async function sendMagicLinkEmail(email: string, link: string) {
         <h2>🛵 VespaDatabase</h2>
         <p>Click the button below to sign in. This link expires in 15 minutes.</p>
         <p>
-          <a href="${link}" style="display:inline-block;background:#c0392b;color:#fff;
+          <a href="${link}" style="display:inline-block;background:#4b7a72;color:#fff;
             padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
             Sign in to VespaDatabase
           </a>

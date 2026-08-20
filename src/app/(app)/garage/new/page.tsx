@@ -24,7 +24,7 @@ export default async function NewVespaPage({
       <h1 className="mb-8 text-3xl font-black tracking-tight sm:text-4xl">Park it in the registry.</h1>
 
       {error && (
-        <div className="mb-5 rounded-xl border border-accent bg-accent-soft p-3 text-sm font-semibold text-accent-dark">
+        <div className="mb-5 rounded-xl border border-error bg-error-soft p-3 text-sm font-semibold text-error-dark">
           {error}
         </div>
       )}
