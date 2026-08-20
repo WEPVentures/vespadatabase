@@ -1,0 +1,69 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import { VespaCard } from "@/components/VespaCard";
+
+export default async function GaragePage() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  if (!user.username) redirect("/onboarding");
+
+  const vespas = await prisma.vespa.findMany({
+    where: { ownerId: user.id },
+    orderBy: { createdAt: "desc" },
+    include: { photos: { orderBy: { createdAt: "asc" }, take: 1 } },
+  });
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="mb-2 text-xs font-bold tracking-[0.2em] text-foreground/50 uppercase">
+            My garage
+          </p>
+          <h1 className="text-4xl font-black tracking-tight">
+            Hey, @{user.username} 👋
+          </h1>
+          <p className="mt-2 text-foreground/70">
+            {vespas.length === 0
+              ? "You haven't added a Vespa yet."
+              : `${vespas.length} Vespa${vespas.length === 1 ? "" : "s"} in your garage.`}{" "}
+            <Link href={`/garage/${user.username}`} className="font-semibold text-accent underline">
+              View your public garage →
+            </Link>
+          </p>
+        </div>
+
+        <Link
+          href="/garage/new"
+          className="hard-shadow-sm shrink-0 rounded-full border-2 border-foreground bg-accent px-6 py-3 font-bold text-white transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+        >
+          + Add a Vespa
+        </Link>
+      </div>
+
+      {vespas.length === 0 ? (
+        <div className="rounded-2xl border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
+          <p className="text-4xl">🛵</p>
+          <p className="mt-3 font-bold">Nothing parked here yet.</p>
+          <p className="mt-1 text-sm text-foreground/60">
+            Add your first Vespa — photos, story, VIN, all of it.
+          </p>
+          <Link
+            href="/garage/new"
+            className="mt-5 inline-block rounded-full border-2 border-foreground bg-accent px-6 py-2.5 font-bold text-white"
+          >
+            + Add a Vespa
+          </Link>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {vespas.map((vespa) => (
+            <VespaCard key={vespa.id} vespa={vespa} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
