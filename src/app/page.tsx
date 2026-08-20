@@ -64,7 +64,7 @@ export default async function Home() {
               href="/browse"
               className="rounded-lg border border-border bg-card px-6 py-3 font-bold transition hover:bg-black/[0.03]"
             >
-              Browse Vespas
+              Search Database
             </Link>
           </div>
 
@@ -111,10 +111,10 @@ export default async function Home() {
 
         <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
           <h2 className="text-3xl font-black tracking-tight sm:text-4xl">
-            Got a Vespa? Add it to the record.
+            Got a Vespa?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-foreground/70">
-            Takes two minutes. No password to remember — just your email.
+            Add it to the database.
           </p>
           <Link
             href="/login"

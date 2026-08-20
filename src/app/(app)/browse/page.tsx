@@ -66,11 +66,8 @@ export default async function BrowsePage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="mb-2 text-xs font-bold tracking-[0.2em] text-muted uppercase">
-        The directory
-      </p>
       <h1 className="mb-2 text-3xl font-black tracking-tight sm:text-4xl">
-        Every Vespa on record.
+        Directory
       </h1>
 
       <form method="GET" className="mt-6">

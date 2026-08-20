@@ -53,7 +53,7 @@ export function LoginForm() {
         <h2 className="mt-2 text-xl font-bold">Check your email</h2>
         <p className="mt-2 text-sm text-foreground/70">
           We sent a sign-in link to <span className="font-semibold">{email}</span>. It expires
-          in 15 minutes.
+          in 15 minutes. Check your spam too.
         </p>
 
         {devLink && (

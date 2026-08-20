@@ -8,13 +8,13 @@ export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
       <p className="mb-3 text-xs font-bold tracking-[0.2em] text-muted uppercase">
-        Sign in
+        Sign in / sign up
       </p>
       <h1 className="mb-3 text-3xl font-black tracking-tight sm:text-4xl">
-        Check your inbox, not your memory.
+        Enter your email.
       </h1>
       <p className="mb-8 text-foreground/70">
-        We&apos;ll email you a magic link. No password to set, forget, or reuse.
+        We&apos;ll email you a magic link.
       </p>
 
       <Suspense>
