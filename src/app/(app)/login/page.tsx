@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import { LoginForm } from "./LoginForm";
 
+// Every page here reads live data (Netlify Blobs / session), and
+// Blobs credentials only exist at request time, not during the build's
+// static prerendering step — never statically optimize these.
+export const dynamic = "force-dynamic";
+
 export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">

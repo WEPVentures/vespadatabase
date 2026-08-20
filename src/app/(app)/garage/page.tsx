@@ -4,6 +4,11 @@ import { getCurrentUser } from "@/lib/auth";
 import { listVespasByOwner } from "@/lib/data/vespas";
 import { VespaCard } from "@/components/VespaCard";
 
+// Every page here reads live data (Netlify Blobs / session), and
+// Blobs credentials only exist at request time, not during the build's
+// static prerendering step — never statically optimize these.
+export const dynamic = "force-dynamic";
+
 export default async function GaragePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");

@@ -5,6 +5,11 @@ import { getCurrentUser } from "@/lib/auth";
 import { VespaCard } from "@/components/VespaCard";
 import Link from "next/link";
 
+// Every page here reads live data (Netlify Blobs / session), and
+// Blobs credentials only exist at request time, not during the build's
+// static prerendering step — never statically optimize these.
+export const dynamic = "force-dynamic";
+
 export default async function PublicGaragePage({
   params,
 }: {

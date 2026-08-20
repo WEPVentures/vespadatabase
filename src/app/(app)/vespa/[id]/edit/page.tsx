@@ -3,6 +3,11 @@ import { getVespaById } from "@/lib/data/vespas";
 import { getCurrentUser } from "@/lib/auth";
 import { VespaFormFields } from "@/components/VespaFormFields";
 
+// Every page here reads live data (Netlify Blobs / session), and
+// Blobs credentials only exist at request time, not during the build's
+// static prerendering step — never statically optimize these.
+export const dynamic = "force-dynamic";
+
 export default async function EditVespaPage({
   params,
   searchParams,

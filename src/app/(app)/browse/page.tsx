@@ -9,6 +9,11 @@ import {
 } from "@/lib/data/vespas";
 import { getUsersByIds } from "@/lib/data/users";
 
+// Every page here reads live data (Netlify Blobs / session), and
+// Blobs credentials only exist at request time, not during the build's
+// static prerendering step — never statically optimize these.
+export const dynamic = "force-dynamic";
+
 const SORT_OPTIONS: Record<BrowseSortKey, { label: string }> = {
   newest: { label: "Newest first" },
   oldest: { label: "Oldest first" },
