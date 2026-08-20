@@ -11,24 +11,24 @@ export const dynamic = "force-dynamic";
 
 const FEATURES = [
   {
-    emoji: "📸",
-    title: "Photo-first profiles",
-    body: "Every Vespa gets its own page — photos, story, restoration history, the works.",
-  },
-  {
-    emoji: "🧾",
-    title: "VIN & serial tracking",
-    body: "Log the serial number now. Ownership history over time is coming later — this is the foundation.",
+    emoji: "📜",
+    title: "History",
+    body: "Preserve your Vespa's story — its owners, photos, restorations, and the miles along the way.",
   },
   {
     emoji: "🌍",
-    title: "A public directory",
-    body: "Browse every registered Vespa, filter by model or year, and see what's out there.",
+    title: "Community",
+    body: "Join a worldwide collection of Vespa owners and the scooters they love.",
   },
   {
-    emoji: "🗄️",
-    title: "Your own Garage page",
-    body: "A shareable page for your collection — send the link to friends, forums, or your local club.",
+    emoji: "🔗",
+    title: "Continuity",
+    body: "When a Vespa changes hands, its story goes with it — ready for the next owner to continue.",
+  },
+  {
+    emoji: "🧭",
+    title: "Discovery",
+    body: "Explore Vespas across generations, models, colors, and places — and see what's still out there.",
   },
 ];
 
@@ -91,11 +91,8 @@ export default async function Home() {
 
         <section className="border-t border-border bg-sidebar">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <p className="mb-2 text-xs font-bold tracking-[0.2em] text-muted uppercase">
-              Why bother
-            </p>
             <h2 className="mb-10 max-w-2xl text-3xl font-black tracking-tight sm:text-4xl">
-              Not a repair manual. A pedigree.
+              Features
             </h2>
 
             <div className="grid gap-4 sm:grid-cols-2">
