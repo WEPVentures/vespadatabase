@@ -20,7 +20,7 @@ export async function MarketingHeader() {
             href={user ? "/garage" : "/login"}
             className="rounded-lg bg-accent px-4 py-2 text-white hover:bg-accent-dark"
           >
-            {user ? "My Garage" : "Sign Up"}
+            {user ? "My Garage" : "Sign In"}
           </Link>
         </nav>
       </div>
