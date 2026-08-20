@@ -1,13 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+
+const MAX_DIMENSION = 1920;
+const JPEG_QUALITY = 0.82;
+
+// Phone camera photos routinely run several MB each, and Netlify's
+// serverless functions cap request bodies well under what a handful of
+// full-resolution photos add up to. Resize/re-encode in the browser before
+// upload so the request always stays small, regardless of what the camera
+// produced.
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith("image/") || file.type === "image/gif") {
+    return file;
+  }
+
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(bitmap.width, bitmap.height));
+  const width = Math.round(bitmap.width * scale);
+  const height = Math.round(bitmap.height * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return file;
+  ctx.drawImage(bitmap, 0, 0, width, height);
+
+  const blob: Blob | null = await new Promise((resolve) =>
+    canvas.toBlob(resolve, "image/jpeg", JPEG_QUALITY)
+  );
+  if (!blob || blob.size >= file.size) return file;
+
+  return new File([blob], file.name.replace(/\.\w+$/, ".jpg"), { type: "image/jpeg" });
+}
 
 export function PhotoInput({ name = "photos" }: { name?: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []).slice(0, 8);
-    setPreviews(files.map((f) => URL.createObjectURL(f)));
+    if (files.length === 0) {
+      setPreviews([]);
+      return;
+    }
+
+    setIsProcessing(true);
+    const compressed = await Promise.all(files.map(compressImage));
+    setIsProcessing(false);
+
+    // Replace the input's own file list with the compressed versions so
+    // the eventual form submit uploads the small files, not the originals.
+    const dataTransfer = new DataTransfer();
+    compressed.forEach((f) => dataTransfer.items.add(f));
+    if (inputRef.current) {
+      inputRef.current.files = dataTransfer.files;
+    }
+
+    setPreviews(compressed.map((f) => URL.createObjectURL(f)));
   }
 
   return (
@@ -23,12 +75,15 @@ export function PhotoInput({ name = "photos" }: { name?: string }) {
           Choose Files
         </label>
         <span className="text-sm text-muted">
-          {previews.length > 0
-            ? `${previews.length} file${previews.length === 1 ? "" : "s"}`
-            : "No files chosen"}
+          {isProcessing
+            ? "Processing…"
+            : previews.length > 0
+              ? `${previews.length} file${previews.length === 1 ? "" : "s"}`
+              : "No files chosen"}
         </span>
       </div>
       <input
+        ref={inputRef}
         id={name}
         name={name}
         type="file"
