@@ -1,25 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf6ec;
-  --foreground: #17160f;
-  --accent: #c4402c;
-  --accent-dark: #9c3220;
-  --mint: #d7ece0;
-  --mint-dark: #2f8f5f;
-  --card: #fffdf7;
-  --border: #17160f;
+  --background: #ffffff;
+  --foreground: #131316;
+  --muted: #6b6b74;
+  --accent: #b3341f;
+  --accent-dark: #8c2818;
+  --accent-soft: #fbeae7;
+  --mint: #e6f4ea;
+  --mint-dark: #1f7a43;
+  --card: #ffffff;
+  --border: #e6e6e9;
+  --sidebar: #fafafa;
+  --sidebar-active: #131316;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
+  --color-accent-soft: var(--accent-soft);
   --color-mint: var(--mint);
   --color-mint-dark: var(--mint-dark);
   --color-card: var(--card);
   --color-border: var(--border);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-active: var(--sidebar-active);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -27,12 +35,4 @@
 body {
   background: var(--background);
   color: var(--foreground);
-}
-
-.hard-shadow {
-  box-shadow: 4px 4px 0 0 var(--foreground);
-}
-
-.hard-shadow-sm {
-  box-shadow: 3px 3px 0 0 var(--foreground);
 }

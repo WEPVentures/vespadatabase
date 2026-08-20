@@ -39,7 +39,7 @@ export function UsernameForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       {error && (
-        <div className="rounded-xl border-2 border-accent bg-accent/10 p-3 text-sm font-semibold text-accent-dark">
+        <div className="rounded-xl border border-accent bg-accent-soft p-3 text-sm font-semibold text-accent-dark">
           {error}
         </div>
       )}
@@ -47,8 +47,8 @@ export function UsernameForm() {
       <label className="block text-sm font-bold" htmlFor="username">
         Username
       </label>
-      <div className="flex items-center rounded-xl border-2 border-foreground bg-card focus-within:bg-mint/30">
-        <span className="pl-4 text-foreground/40">@</span>
+      <div className="flex items-center rounded-lg border border-border bg-card focus-within:ring-2 focus-within:ring-accent/30">
+        <span className="pl-4 text-muted">@</span>
         <input
           id="username"
           required
@@ -58,17 +58,17 @@ export function UsernameForm() {
           value={username}
           onChange={(e) => setUsername(e.target.value.toLowerCase())}
           placeholder="scooterino"
-          className="w-full rounded-xl bg-transparent px-2 py-3 outline-none"
+          className="w-full rounded-lg bg-transparent px-2 py-3 outline-none"
         />
       </div>
-      <p className="text-xs text-foreground/50">
+      <p className="text-xs text-muted">
         3-20 characters: lowercase letters, numbers, - or _
       </p>
 
       <button
         type="submit"
         disabled={loading}
-        className="hard-shadow-sm w-full rounded-full border-2 border-foreground bg-accent px-6 py-3 font-bold text-white transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none disabled:opacity-60"
+        className="w-full rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark disabled:opacity-60"
       >
         {loading ? "Saving…" : "Continue to my garage"}
       </button>

@@ -15,10 +15,10 @@ export default async function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <p className="mb-3 text-xs font-bold tracking-[0.2em] text-foreground/50 uppercase">
+      <p className="mb-3 text-xs font-bold tracking-[0.2em] text-muted uppercase">
         One last thing
       </p>
-      <h1 className="mb-3 text-4xl font-black tracking-tight">Pick a username.</h1>
+      <h1 className="mb-3 text-3xl font-black tracking-tight sm:text-4xl">Pick a username.</h1>
       <p className="mb-8 text-foreground/70">
         This becomes your public garage URL: vespadatabase.app/garage/
         <span className="font-semibold">yourname</span>

@@ -4,10 +4,10 @@ import { LoginForm } from "./LoginForm";
 export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <p className="mb-3 text-xs font-bold tracking-[0.2em] text-foreground/50 uppercase">
+      <p className="mb-3 text-xs font-bold tracking-[0.2em] text-muted uppercase">
         Sign in
       </p>
-      <h1 className="mb-3 text-4xl font-black tracking-tight">
+      <h1 className="mb-3 text-3xl font-black tracking-tight sm:text-4xl">
         Check your inbox, not your memory.
       </h1>
       <p className="mb-8 text-foreground/70">

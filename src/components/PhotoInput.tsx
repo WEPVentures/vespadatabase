@@ -22,9 +22,9 @@ export function PhotoInput({ name = "photos" }: { name?: string }) {
         accept="image/*"
         multiple
         onChange={handleChange}
-        className="mt-1 block w-full rounded-xl border-2 border-dashed border-foreground/40 bg-card px-4 py-6 text-sm file:mr-4 file:rounded-full file:border-2 file:border-foreground file:bg-mint file:px-4 file:py-2 file:font-semibold file:text-foreground"
+        className="mt-1 block w-full rounded-lg border border-dashed border-border bg-card px-4 py-6 text-sm file:mr-4 file:rounded-lg file:border file:border-border file:bg-sidebar file:px-4 file:py-2 file:font-semibold file:text-foreground"
       />
-      <p className="mt-1 text-xs text-foreground/50">Up to 8 photos. JPG, PNG, WEBP, or GIF.</p>
+      <p className="mt-1 text-xs text-muted">Up to 8 photos. JPG, PNG, WEBP, or GIF.</p>
 
       {previews.length > 0 && (
         <div className="mt-3 grid grid-cols-4 gap-2">
@@ -34,7 +34,7 @@ export function PhotoInput({ name = "photos" }: { name?: string }) {
               key={i}
               src={src}
               alt={`Preview ${i + 1}`}
-              className="aspect-square rounded-lg border-2 border-foreground object-cover"
+              className="aspect-square rounded-lg border border-border object-cover"
             />
           ))}
         </div>

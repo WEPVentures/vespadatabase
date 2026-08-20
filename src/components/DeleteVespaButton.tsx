@@ -13,7 +13,7 @@ export function DeleteVespaButton({ vespaId }: { vespaId: string }) {
     >
       <button
         type="submit"
-        className="rounded-full border-2 border-foreground px-5 py-2.5 font-bold text-foreground/70 hover:bg-foreground hover:text-background"
+        className="rounded-lg border border-border px-5 py-2.5 font-bold text-foreground/70 hover:border-accent hover:text-accent"
       >
         Delete
       </button>

@@ -22,7 +22,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
             required
             defaultValue={defaults?.model ?? ""}
             placeholder="GTS 300, P200E, Primavera…"
-            className="mt-1 w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 outline-none focus:bg-mint/30"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>
 
@@ -38,7 +38,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
             max={new Date().getFullYear() + 1}
             defaultValue={defaults?.year ?? ""}
             placeholder="1978"
-            className="mt-1 w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 outline-none focus:bg-mint/30"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>
       </div>
@@ -53,7 +53,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
             name="color"
             defaultValue={defaults?.color ?? ""}
             placeholder="Sage Green"
-            className="mt-1 w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 outline-none focus:bg-mint/30"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>
 
@@ -66,7 +66,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
             name="vin"
             defaultValue={defaults?.vin ?? ""}
             placeholder="Optional, but encouraged"
-            className="mt-1 w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 font-mono text-sm outline-none focus:bg-mint/30"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>
       </div>
@@ -81,7 +81,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
           rows={5}
           defaultValue={defaults?.story ?? ""}
           placeholder="How'd you get it? Restoration history, quirks, anything worth remembering."
-          className="mt-1 w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 outline-none focus:bg-mint/30"
+          className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
         />
       </div>
 

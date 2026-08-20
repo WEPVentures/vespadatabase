@@ -30,10 +30,10 @@ export default async function PublicGaragePage({
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 text-xs font-bold tracking-[0.2em] text-foreground/50 uppercase">
+          <p className="mb-2 text-xs font-bold tracking-[0.2em] text-muted uppercase">
             Garage
           </p>
-          <h1 className="text-4xl font-black tracking-tight">@{owner.username}</h1>
+          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">@{owner.username}</h1>
           <p className="mt-2 text-foreground/70">
             {owner.vespas.length} Vespa{owner.vespas.length === 1 ? "" : "s"} registered · member
             since {owner.createdAt.getFullYear()}
@@ -43,7 +43,7 @@ export default async function PublicGaragePage({
         {isOwnGarage && (
           <Link
             href="/garage/new"
-            className="hard-shadow-sm shrink-0 rounded-full border-2 border-foreground bg-accent px-6 py-3 font-bold text-white transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+            className="shrink-0 rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark"
           >
             + Add a Vespa
           </Link>
@@ -51,7 +51,7 @@ export default async function PublicGaragePage({
       </div>
 
       {owner.vespas.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
+        <div className="rounded-xl border border-dashed border-border bg-card p-12 text-center">
           <p className="text-4xl">🛵</p>
           <p className="mt-3 font-bold">Nothing here yet.</p>
         </div>

@@ -17,7 +17,7 @@ export function VespaCard({ vespa }: { vespa: VespaCardData }) {
   return (
     <Link
       href={`/vespa/${vespa.id}`}
-      className="group block overflow-hidden rounded-2xl border-2 border-foreground bg-card transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_var(--foreground)]"
+      className="group block overflow-hidden rounded-xl border border-border bg-card transition hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.15)]"
     >
       <div className="relative flex aspect-[4/3] items-center justify-center bg-mint">
         {photo ? (

@@ -48,7 +48,7 @@ export function LoginForm() {
 
   if (status === "sent") {
     return (
-      <div className="rounded-2xl border-2 border-foreground bg-card p-6">
+      <div className="rounded-xl border border-border bg-card p-6">
         <p className="text-2xl">📬</p>
         <h2 className="mt-2 text-xl font-bold">Check your email</h2>
         <p className="mt-2 text-sm text-foreground/70">
@@ -57,7 +57,7 @@ export function LoginForm() {
         </p>
 
         {devLink && (
-          <div className="mt-5 rounded-xl border-2 border-dashed border-mint-dark bg-mint/40 p-4">
+          <div className="mt-5 rounded-lg border border-dashed border-mint-dark bg-mint/50 p-4">
             <p className="text-xs font-bold tracking-wide text-mint-dark uppercase">
               🔧 Dev mode — no SMTP configured
             </p>
@@ -79,7 +79,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       {error && (
-        <div className="rounded-xl border-2 border-accent bg-accent/10 p-3 text-sm font-semibold text-accent-dark">
+        <div className="rounded-xl border border-accent bg-accent-soft p-3 text-sm font-semibold text-accent-dark">
           {error}
         </div>
       )}
@@ -94,13 +94,13 @@ export function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@example.com"
-        className="w-full rounded-xl border-2 border-foreground bg-card px-4 py-3 outline-none focus:bg-mint/30"
+        className="w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
       />
 
       <button
         type="submit"
         disabled={status === "loading"}
-        className="hard-shadow-sm w-full rounded-full border-2 border-foreground bg-accent px-6 py-3 font-bold text-white transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none disabled:opacity-60"
+        className="w-full rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark disabled:opacity-60"
       >
         {status === "loading" ? "Sending…" : "Send magic link"}
       </button>

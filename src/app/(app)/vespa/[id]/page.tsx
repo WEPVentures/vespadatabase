@@ -28,19 +28,19 @@ export default async function VespaDetailPage({
   const [mainPhoto, ...restPhotos] = vespa.photos;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <div className="mb-6">
         {vespa.owner.username && (
           <Link
             href={`/garage/${vespa.owner.username}`}
-            className="text-sm font-semibold text-foreground/60 hover:text-accent"
+            className="text-sm font-semibold text-muted hover:text-accent"
           >
             ← @{vespa.owner.username}&apos;s garage
           </Link>
         )}
       </div>
 
-      <div className="mb-6 overflow-hidden rounded-2xl border-2 border-foreground bg-mint">
+      <div className="mb-6 overflow-hidden rounded-xl border border-border bg-mint">
         {mainPhoto ? (
           <div className="relative aspect-[16/10] w-full">
             <Image
@@ -62,7 +62,7 @@ export default async function VespaDetailPage({
           {restPhotos.map((photo) => (
             <div
               key={photo.id}
-              className="relative aspect-square overflow-hidden rounded-lg border-2 border-foreground"
+              className="relative aspect-square overflow-hidden rounded-lg border border-border"
             >
               <Image src={photo.url} alt={title} fill className="object-cover" sizes="150px" />
             </div>
@@ -72,7 +72,7 @@ export default async function VespaDetailPage({
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black tracking-tight">{title}</h1>
+          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">{title}</h1>
           <p className="mt-1 text-lg text-foreground/60">{vespa.color ?? "Color unknown"}</p>
         </div>
 
@@ -80,7 +80,7 @@ export default async function VespaDetailPage({
           <div className="flex gap-2">
             <Link
               href={`/vespa/${vespa.id}/edit`}
-              className="rounded-full border-2 border-foreground bg-mint px-5 py-2.5 font-bold hover:bg-mint-dark hover:text-white"
+              className="rounded-lg border border-border bg-card px-5 py-2.5 font-bold hover:bg-black/[0.04]"
             >
               Edit
             </Link>
@@ -89,17 +89,17 @@ export default async function VespaDetailPage({
         )}
       </div>
 
-      <dl className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border-2 border-foreground bg-card p-4">
-          <dt className="text-xs font-bold tracking-wide text-foreground/50 uppercase">Model</dt>
+      <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="rounded-lg border border-border bg-card p-4">
+          <dt className="text-xs font-bold tracking-wide text-muted uppercase">Model</dt>
           <dd className="mt-1 font-semibold">{vespa.model}</dd>
         </div>
-        <div className="rounded-xl border-2 border-foreground bg-card p-4">
-          <dt className="text-xs font-bold tracking-wide text-foreground/50 uppercase">Year</dt>
+        <div className="rounded-lg border border-border bg-card p-4">
+          <dt className="text-xs font-bold tracking-wide text-muted uppercase">Year</dt>
           <dd className="mt-1 font-semibold">{vespa.year ?? "Unknown"}</dd>
         </div>
-        <div className="rounded-xl border-2 border-foreground bg-card p-4">
-          <dt className="text-xs font-bold tracking-wide text-foreground/50 uppercase">
+        <div className="rounded-lg border border-border bg-card p-4">
+          <dt className="text-xs font-bold tracking-wide text-muted uppercase">
             VIN / Serial
           </dt>
           <dd className="mt-1 truncate font-mono text-sm font-semibold">
@@ -109,13 +109,13 @@ export default async function VespaDetailPage({
       </dl>
 
       {vespa.story && (
-        <div className="mt-8 rounded-2xl border-2 border-foreground bg-card p-6">
+        <div className="mt-8 rounded-xl border border-border bg-card p-6">
           <h2 className="mb-3 text-lg font-bold">The story</h2>
           <p className="whitespace-pre-wrap text-foreground/80">{vespa.story}</p>
         </div>
       )}
 
-      <p className="mt-6 text-xs text-foreground/40">
+      <p className="mt-6 text-xs text-muted">
         Registered {vespa.createdAt.toLocaleDateString()}
       </p>
     </div>
