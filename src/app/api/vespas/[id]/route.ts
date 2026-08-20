@@ -37,6 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       color: parsed.data.color,
       city: parsed.data.city,
       state: parsed.data.state,
+      country: parsed.data.country,
       story: parsed.data.story,
       photos: photoUrls.length ? { create: photoUrls.map((url) => ({ url })) } : undefined,
     },

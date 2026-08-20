@@ -7,6 +7,7 @@ type Defaults = {
   color?: string | null;
   city?: string | null;
   state?: string | null;
+  country?: string | null;
   story?: string | null;
 };
 
@@ -73,7 +74,7 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label className="block text-sm font-bold" htmlFor="city">
             City
@@ -89,13 +90,26 @@ export function VespaFormFields({ defaults }: { defaults?: Defaults }) {
 
         <div>
           <label className="block text-sm font-bold" htmlFor="state">
-            State
+            State / Province
           </label>
           <input
             id="state"
             name="state"
             defaultValue={defaults?.state ?? ""}
             placeholder="MA"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-bold" htmlFor="country">
+            Country
+          </label>
+          <input
+            id="country"
+            name="country"
+            defaultValue={defaults?.country ?? ""}
+            placeholder="USA"
             className="mt-1 w-full rounded-lg border border-border bg-card px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
           />
         </div>

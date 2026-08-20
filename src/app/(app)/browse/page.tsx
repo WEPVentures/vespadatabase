@@ -35,6 +35,7 @@ export default async function BrowsePage({
       { vin: { contains: q } },
       { city: { contains: q } },
       { state: { contains: q } },
+      { country: { contains: q } },
       { owner: { username: { contains: q } } },
     ];
   }
@@ -217,7 +218,7 @@ export default async function BrowsePage({
                       {vespa.color ?? "—"}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-foreground/80">
-                      {[vespa.city, vespa.state].filter(Boolean).join(", ") || "—"}
+                      {[vespa.city, vespa.state, vespa.country].filter(Boolean).join(", ") || "—"}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {vespa.vin ? (

@@ -7,6 +7,7 @@ type ParsedVespa = {
     color: string | null;
     city: string | null;
     state: string | null;
+    country: string | null;
     story: string | null;
   };
 };
@@ -20,6 +21,7 @@ export function parseVespaForm(formData: FormData): ParsedVespa {
   const color = String(formData.get("color") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
   const state = String(formData.get("state") ?? "").trim();
+  const country = String(formData.get("country") ?? "").trim();
   const story = String(formData.get("story") ?? "").trim();
 
   const empty = {
@@ -29,6 +31,7 @@ export function parseVespaForm(formData: FormData): ParsedVespa {
     color: null,
     city: null,
     state: null,
+    country: null,
     story: null,
   };
 
@@ -53,6 +56,7 @@ export function parseVespaForm(formData: FormData): ParsedVespa {
       color: color || null,
       city: city || null,
       state: state || null,
+      country: country || null,
       story: story || null,
     },
   };

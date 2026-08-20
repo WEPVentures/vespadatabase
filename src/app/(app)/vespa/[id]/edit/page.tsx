@@ -52,6 +52,7 @@ export default async function EditVespaPage({
             color: vespa.color,
             city: vespa.city,
             state: vespa.state,
+            country: vespa.country,
             story: vespa.story,
           }}
         />
