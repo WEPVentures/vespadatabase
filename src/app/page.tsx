@@ -45,10 +45,9 @@ export default async function Home() {
                 Ciao bella!
               </h1>
               <p className="mt-6 text-lg text-foreground/70 sm:text-xl">
-                Since 1946, Vespa has made the world&apos;s most iconic scooter. More than 20
-                million have been produced. Vespa Database is a crowdsourced catalog built to
-                connect owners around the world and document the life of every Vespa added to the
-                database.
+                Since 1946, more than 20 million of the world&apos;s most iconic scooters have
+                been produced. Vespa Database is an enthusiast database designed to catalog
+                Vespas and connect owners around the world.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
