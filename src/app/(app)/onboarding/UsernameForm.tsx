@@ -3,9 +3,17 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-export function UsernameForm() {
+export function UsernameForm({
+  initialUsername = "",
+  redirectTo = "/garage",
+  submitLabel = "Continue to my garage",
+}: {
+  initialUsername?: string;
+  redirectTo?: string;
+  submitLabel?: string;
+}) {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(initialUsername);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +36,7 @@ export function UsernameForm() {
         return;
       }
 
-      router.push("/garage");
+      router.push(redirectTo);
       router.refresh();
     } catch {
       setError("Couldn't reach the server. Try again.");
@@ -70,7 +78,7 @@ export function UsernameForm() {
         disabled={loading}
         className="w-full rounded-lg bg-accent px-6 py-3 font-bold text-white transition hover:bg-accent-dark disabled:opacity-60"
       >
-        {loading ? "Saving…" : "Continue to my garage"}
+        {loading ? "Saving…" : submitLabel}
       </button>
     </form>
   );

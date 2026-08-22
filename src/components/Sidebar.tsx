@@ -65,6 +65,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
               label={user.username ?? "Profile"}
               active={pathname === `/garage/${user.username}`}
             />
+            <NavLink href="/account" emoji="⚙️" label="Account" active={pathname === "/account"} />
             <form action="/api/auth/logout" method="POST">
               <button
                 type="submit"
@@ -123,6 +124,14 @@ export function MobileTopBar({ user }: { user: SidebarUser }) {
               }`}
             >
               👤
+            </Link>
+            <Link
+              href="/account"
+              className={`rounded-full px-2.5 py-1.5 text-lg ${
+                pathname === "/account" ? "bg-accent-soft" : ""
+              }`}
+            >
+              ⚙️
             </Link>
           </>
         ) : (
